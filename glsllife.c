@@ -6,7 +6,7 @@
 #include "sdlstuff.h"
 #include "glstuff.h"
 //main
-
+extern int SDL_GetTicks();
 int main(int argc, char **argv){
 	debugmode = TRUE;
 	int framecount, to, t;
