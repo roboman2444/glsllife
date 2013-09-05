@@ -9,7 +9,7 @@
 #include <stdlib.h>
 // varbles
 int debugmode;
-char * shadervertname;
-char * shaderfragname;
+char *shadervertname;
+char *shaderfragname;
 
 #endif

@@ -6,7 +6,7 @@ void main(){
     //gl_FragColor = gl_Color;
     gl_FragColor = texture2D(texture, texCoord);
     //gl_FragColor += texture2D(texture, texCoord);
-  /*  
+/*
    gl_FragColor += texture2D(texture, vec2(texCoord.x - 4.0*blurSize, texCoord.y)) * 0.05;
    gl_FragColor += texture2D(texture, vec2(texCoord.x - 3.0*blurSize, texCoord.y)) * 0.09;
    gl_FragColor += texture2D(texture, vec2(texCoord.x - 2.0*blurSize, texCoord.y)) * 0.12;
@@ -17,8 +17,8 @@ void main(){
    gl_FragColor += texture2D(texture, vec2(texCoord.x + 3.0*blurSize, texCoord.y)) * 0.09;
    gl_FragColor += texture2D(texture, vec2(texCoord.x + 4.0*blurSize, texCoord.y)) * 0.05;
 */
-	gl_FragColor.r = texture2D(texture, texCoord+vec2(0.1, 0.1)).r;
+	gl_FragColor.r = texture2D(texture, texCoord+vec2(0.01, 0.01)).r;
 	gl_FragColor.g = texture2D(texture, texCoord).g;
-	gl_FragColor.b = texture2D(texture, texCoord-vec2(0.1, 0.1)).b;
-what the fuck
+	gl_FragColor.b = texture2D(texture, texCoord-vec2(0.01, 0.01)).b;
+	gl_FragColor.a = 1.0;
 }
