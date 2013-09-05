@@ -26,7 +26,7 @@ int main(int argc, char **argv){
 			to = t;
 			framecount = 0;
 		}
-		sleep(0.1);
+//		sleep(0.1);
 	}
 	return TRUE;
 }

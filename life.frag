@@ -8,13 +8,13 @@ void main(){
 	neighbors += step(0.1,texture2D(texture, texCoord + vec2(0.00125,-0.00166666666)).r);
 	neighbors += step(0.1,texture2D(texture, texCoord + vec2(0.0, 	  0.00166666666)).r);
 	neighbors += step(0.1,texture2D(texture, texCoord + vec2(0.0, 	 -0.00166666666)).r);
-//	neighbors += step(0.1,texture2D(texture, texCoord + vec2(-0.00125,0.00166666666)).r);
-//	neighbors += step(0.1,texture2D(texture, texCoord + vec2(-0.00125,0.0)		).r);
-//	neighbors += step(0.1,texture2D(texture, texCoord + vec2(-0.00125,-0.00166666666)).r);
+	neighbors += step(0.1,texture2D(texture, texCoord + vec2(-0.00125,0.00166666666)).r);
+	neighbors += step(0.1,texture2D(texture, texCoord + vec2(-0.00125,0.0)		).r);
+	neighbors += step(0.1,texture2D(texture, texCoord + vec2(-0.00125,-0.00166666666)).r);
 
-    //gl_FragColor = gl_Color;
-    //gl_FragColor += texture2D(texture, texCoord);
 	gl_FragColor.r = texture2D(texture, texCoord);
-	gl_FragColor.r += step(2, neighbors);
-//	gl_FragColor.r = -1 *step(4, neighbors);
+	gl_FragColor.r += step(3, neighbors);
+	gl_FragColor.r *= step(2, neighbors);
+//	gl_FragColor.r *= 1-step(4, neighbors);
+	gl_FragColor.r *= step(neighbors, 3);
 }
