@@ -5,6 +5,7 @@
 #include "glsllife.h"
 #include "sdlstuff.h"
 #include "glstuff.h"
+#include <unistd.h>
 //main
 extern int SDL_GetTicks();
 int main(int argc, char **argv){
@@ -25,6 +26,7 @@ int main(int argc, char **argv){
 			to = t;
 			framecount = 0;
 		}
+		sleep(0.1);
 	}
 	return TRUE;
 }
