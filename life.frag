@@ -13,12 +13,11 @@ void main(){
 	neighbors += texture2D(texture, neighborCoord[6]).r;
 	neighbors += texture2D(texture, neighborCoord[7]).r;
 
-	gl_FragColor.r = texture2D(texture, texCoord);
-	gl_FragColor.r += step(3, neighbors);
-	gl_FragColor.r *= step(2, neighbors);
-//	gl_FragColor.r *= 1-step(4, neighbors);
-	gl_FragColor.r *= step(neighbors, 3);
-//	gl_FragColor.r += step(6, neighbors);
-//	gl_FragColor.r *= step(neighbors, 6);
+	gl_FragColor.r = texture2D(texture, texCoord); // carried life
+
+	gl_FragColor.r += step(3, neighbors); //added life if under 3
+
+	gl_FragColor.r *= step(2, neighbors); //death if under 2
+	gl_FragColor.r *= step(neighbors, 3); // death if over 3
 
 }

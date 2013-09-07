@@ -12,6 +12,7 @@
 GLuint texid2, texid1;
 GLuint fbid2, fbid1;
 int which = FALSE;
+int count = 0;
 //functions
 int initFB(void){
 	glGenTextures(1, &texid1);
@@ -32,6 +33,7 @@ int initFB(void){
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, screenWidth, screenHeight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glGenFramebuffers(1, &fbid2);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
@@ -70,6 +72,7 @@ int glInit(void){
 	//todo error checkelecking
 	if(!initShader()) return FALSE;
 	if(!initFB())	return FALSE;
+
 	return TRUE;
 }
 void drawfsquad(void){
@@ -92,31 +95,41 @@ void startsmall(void){
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glColor3f(1.0f, 1.0f, 0.0f); //wont need this much longer
-	drawsmallquad(0.1f, 0.1f);
+	drawsmallquad(0.6f, 0.8f);
 }
 int glRender(void){
-	//todo
+/*
 	if(which)glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
 	else glBindFramebuffer(GL_FRAMEBUFFER, fbid1);
 
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_TEXTURE_2D);
 	glUseProgram(programobject);
 
 	if(which)glBindTexture(GL_TEXTURE_2D, texid1);
 	else glBindTexture(GL_TEXTURE_2D, texid2);
 	drawfsquad();
-
-
-	if(which)glBindTexture(GL_TEXTURE_2D, texid2);
-	else glBindTexture(GL_TEXTURE_2D, texid1);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glUseProgram(0);
+*/
+	glUseProgram(programobject);
+	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
+		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
+		glBindTexture(GL_TEXTURE_2D, texid1);
+	} else {
+		glBindFramebuffer(GL_FRAMEBUFFER,fbid1);
+		glBindTexture(GL_TEXTURE_2D, texid2);
+	}
 	drawfsquad();
-	//todo make this cleaner
-	SDL_GL_SwapBuffers();
+	if(count > 999){
+		if(which)glBindTexture(GL_TEXTURE_2D, texid2);
+		else glBindTexture(GL_TEXTURE_2D, texid1);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glUseProgram(0);
+		drawfsquad();
+		//todo make this cleaner
+		SDL_GL_SwapBuffers();
+		count = 0;
+	}
 	which = !which;
+	count++;
 	//todo errorcheckin
 	return TRUE;
 }
