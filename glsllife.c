@@ -10,6 +10,7 @@
 extern int SDL_GetTicks();
 int main(int argc, char **argv){
 	debugmode = TRUE;
+	active = TRUE;
 	int framecount, to, t;
 	shadervertname = "./life.vert";
 	shaderfragname = "./life.frag";
@@ -17,14 +18,16 @@ int main(int argc, char **argv){
 	startsmall();
 	to = SDL_GetTicks();
 	while(TRUE){
-		glRender();
 		sdlCheckEvent();
-		framecount++;
-		if(framecount>999){
-			t = SDL_GetTicks();
-			printf("%f fps\n", 1000000.0f/(t-to)); // 100 frames * 1000 ticks
-			to = t;
-			framecount = 0;
+		if(active){
+			glRender();
+			framecount++;
+			if(framecount>999){
+				t = SDL_GetTicks();
+				printf("%f fps\n", 1000000.0f/(t-to)); // 100 frames * 1000 ticks
+				to = t;
+				framecount = 0;
+			}
 		}
 //		sleep(0.1);
 	}

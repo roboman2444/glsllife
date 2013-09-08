@@ -118,7 +118,7 @@ int glRender(void){
 		glBindTexture(GL_TEXTURE_2D, texid2);
 	}
 	drawfsquad();
-	if(count > 999){
+	if(count > 99){
 		if(which)glBindTexture(GL_TEXTURE_2D, texid2);
 		else glBindTexture(GL_TEXTURE_2D, texid1);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

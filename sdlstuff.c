@@ -50,8 +50,26 @@ int sdlCheckEvent(void){
 				SDL_Quit();
 				exit(TRUE);
 			break;
+                        case SDL_KEYDOWN:
+                                sdlHandleKeyPress(&event.key.keysym);
+                        break;
 		}
 
 	}
 	return TRUE;
 }
+void sdlHandleKeyPress(SDL_keysym *keysym){
+
+        //todo add stuff to this and input.c
+        switch (keysym->sym){
+                case SDLK_ESCAPE:
+                        SDL_Quit();
+			exit(TRUE);
+                break;
+                case SDLK_SPACE:
+                        active =!active;
+                break;
+        }
+        return;
+}
+
