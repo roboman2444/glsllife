@@ -8,16 +8,19 @@
 #include <unistd.h>
 //main
 extern int SDL_GetTicks();
-int main(int argc, char **argv){
+int main(int argc, char *argv[]){
 	debugmode = TRUE;
 	active = FALSE;
 	skip = 0;
+	zoom = 1.0f;
 	int framecount, to, t;
 	shadervertname = "./life.vert";
 	shaderfragname = "./life.frag";
 	if(!sdlInit(800, 600, 24) || !glInit()) return FALSE;
 //	startsmall();
-	loadTexture("acorn.bmp");
+	if(argc >1)
+		loadTexture(argv[1]);
+	else startsmall();
 	to = SDL_GetTicks();
 	while(TRUE){
 		sdlCheckEvent();
@@ -34,6 +37,7 @@ int main(int argc, char **argv){
 			glDrawScreen();
 		}
 //		sleep(1);
+//		SDL_Delay(500);
 	}
 	return TRUE;
 }

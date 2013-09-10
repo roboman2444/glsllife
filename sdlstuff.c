@@ -78,6 +78,14 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
 			if(skip <0) skip = 0;
 			printf("frameskip: %i\n", skip);
                 break;
+                case SDLK_UP:
+                        zoom*=2;
+			printf("zoom: %f\n", zoom);
+                break;
+                case SDLK_DOWN:
+                        zoom/=2;
+			printf("zoom: %f\n", zoom);
+                break;
         }
         return;
 }

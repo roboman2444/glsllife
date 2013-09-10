@@ -22,7 +22,7 @@ int initFB(void){
 	glBindTexture(GL_TEXTURE_2D, texid1);
 	//may need to change gl_int to byte or something fo speed
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, screenWidth, screenHeight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glGenFramebuffers(1, &fbid1);
@@ -36,7 +36,7 @@ int initFB(void){
 	glBindTexture(GL_TEXTURE_2D, texid2);
 	//may need to change gl_int to byte or something fo speed
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, screenWidth, screenHeight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -107,8 +107,8 @@ int loadTexture(const char * filename){
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 //	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
@@ -158,7 +158,8 @@ void glDrawScreen(void){
 	else glBindTexture(GL_TEXTURE_2D, texid2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);
-	drawfsquad();
+	if(zoom<1.0) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	drawsmallquad(zoom, zoom);
 	//todo make this cleaner
 	SDL_GL_SwapBuffers();
 }
