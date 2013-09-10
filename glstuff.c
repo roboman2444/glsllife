@@ -14,6 +14,7 @@ GLuint fbid2, fbid1;
 int which = FALSE;
 int count = 0;
 //functions
+extern void glDrawScreen();
 int initFB(void){
 	glGenTextures(1, &texid1);
 	glBindTexture(GL_TEXTURE_2D, texid1);
@@ -25,6 +26,8 @@ int initFB(void){
 	glGenFramebuffers(1, &fbid1);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid1);
 		glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, texid1, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);//unbind
 	if(debugmode) printf("DEBUG -- Bound framebuffer1 to: %i and texture to : %i \n", fbid1, texid1);
 	glGenTextures(1, &texid2);
@@ -38,6 +41,8 @@ int initFB(void){
 	glGenFramebuffers(1, &fbid2);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
 		glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, texid2, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);//unbind
 	if(debugmode) printf("DEBUG -- Bound framebuffer2 to: %i and texture to : %i \n", fbid2, texid2);
 	//todo error detection
@@ -91,24 +96,41 @@ void drawsmallquad(const float sizex, const float sizey){
 		glTexCoord2f(0.0f, 1.0f);glVertex3f(-sizex, sizey, -0.5f);
 	glEnd();
 }
+int loadTexture(const char * filename){
+//todo make texture struct
+	void * data;
+	int width, height;
+	GLuint texture;
+	sdlImportImage(filename, &height, &width, &data);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_BGR, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT);
+
+//	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
+		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
+//		glBindTexture(GL_TEXTURE_2D, texid1);
+//	} else {
+//		glBindFramebuffer(GL_FRAMEBUFFER,fbid1);
+//		glBindTexture(GL_TEXTURE_2D, texid2);
+//	}
+
+	glUseProgram(0);
+	drawsmallquad((float)width/(float)screenWidth, (float)height/(float)screenHeight); //i forgot the casting rules for int division
+//	glDeleteTextures( 1, &texture);
+	glDrawScreen();
+	return TRUE;
+
+}
+
 void startsmall(void){
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glColor3f(1.0f, 1.0f, 0.0f); //wont need this much longer
+	glColor3f(1.0f, 1.0f, 1.0f); //wont need this much longer
 	drawsmallquad(0.6f, 0.8f);
 }
 int glRender(void){
-/*
-	if(which)glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
-	else glBindFramebuffer(GL_FRAMEBUFFER, fbid1);
-
-
-	glUseProgram(programobject);
-
-	if(which)glBindTexture(GL_TEXTURE_2D, texid1);
-	else glBindTexture(GL_TEXTURE_2D, texid2);
-	drawfsquad();
-*/
 	glUseProgram(programobject);
 	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
@@ -118,7 +140,7 @@ int glRender(void){
 		glBindTexture(GL_TEXTURE_2D, texid2);
 	}
 	drawfsquad();
-	if(count > 99){
+	if(count > 0){
 		if(which)glBindTexture(GL_TEXTURE_2D, texid2);
 		else glBindTexture(GL_TEXTURE_2D, texid1);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -132,4 +154,13 @@ int glRender(void){
 	count++;
 	//todo errorcheckin
 	return TRUE;
+}
+void glDrawScreen(void){
+	if(which)glBindTexture(GL_TEXTURE_2D, texid1);
+	else glBindTexture(GL_TEXTURE_2D, texid2);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glUseProgram(0);
+	drawfsquad();
+	//todo make this cleaner
+	SDL_GL_SwapBuffers();
 }

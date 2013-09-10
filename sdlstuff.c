@@ -73,3 +73,14 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
         return;
 }
 
+int sdlImportImage(const char * filename, int *height, int *width, void ** data){
+	SDL_Surface *TextureImage;
+	if(!(TextureImage = SDL_LoadBMP(filename))) return FALSE;
+	*height = TextureImage->h;
+	*width = TextureImage->w;
+	int size = *height * *width * 3;
+	*data = malloc(size);
+	memcpy(*data, TextureImage->pixels, size);
+	SDL_FreeSurface(TextureImage);
+	return TRUE;
+}

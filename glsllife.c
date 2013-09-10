@@ -10,12 +10,13 @@
 extern int SDL_GetTicks();
 int main(int argc, char **argv){
 	debugmode = TRUE;
-	active = TRUE;
+	active = FALSE;
 	int framecount, to, t;
 	shadervertname = "./life.vert";
 	shaderfragname = "./life.frag";
 	if(!sdlInit(800, 600, 24) || !glInit()) return FALSE;
-	startsmall();
+//	startsmall();
+	loadTexture("acorn.bmp");
 	to = SDL_GetTicks();
 	while(TRUE){
 		sdlCheckEvent();
@@ -29,7 +30,7 @@ int main(int argc, char **argv){
 				framecount = 0;
 			}
 		}
-//		sleep(0.1);
+//		sleep(1);
 	}
 	return TRUE;
 }
