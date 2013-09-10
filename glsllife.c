@@ -11,6 +11,7 @@ extern int SDL_GetTicks();
 int main(int argc, char **argv){
 	debugmode = TRUE;
 	active = FALSE;
+	skip = 0;
 	int framecount, to, t;
 	shadervertname = "./life.vert";
 	shaderfragname = "./life.frag";
@@ -29,6 +30,8 @@ int main(int argc, char **argv){
 				to = t;
 				framecount = 0;
 			}
+		} else {
+			glDrawScreen();
 		}
 //		sleep(1);
 	}

@@ -7,6 +7,7 @@
 #include "globaldefs.h"
 #include "sdlstuff.h" //todo something this
 #include "shaderstuff.h"
+#include "glstuff.h"
 
 //local vars
 GLuint texid2, texid1;
@@ -16,6 +17,7 @@ int count = 0;
 //functions
 extern void glDrawScreen();
 int initFB(void){
+	skip = 0;//todo move
 	glGenTextures(1, &texid1);
 	glBindTexture(GL_TEXTURE_2D, texid1);
 	//may need to change gl_int to byte or something fo speed
@@ -104,7 +106,7 @@ int loadTexture(const char * filename){
 	sdlImportImage(filename, &height, &width, &data);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_BGR, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_POINT);
 
@@ -116,9 +118,11 @@ int loadTexture(const char * filename){
 //		glBindTexture(GL_TEXTURE_2D, texid2);
 //	}
 
+	glBindTexture(GL_TEXTURE_2D, texture);
+
 	glUseProgram(0);
 	drawsmallquad((float)width/(float)screenWidth, (float)height/(float)screenHeight); //i forgot the casting rules for int division
-//	glDeleteTextures( 1, &texture);
+	glDeleteTextures( 1, &texture);
 	glDrawScreen();
 	return TRUE;
 
@@ -140,14 +144,8 @@ int glRender(void){
 		glBindTexture(GL_TEXTURE_2D, texid2);
 	}
 	drawfsquad();
-	if(count > 0){
-		if(which)glBindTexture(GL_TEXTURE_2D, texid2);
-		else glBindTexture(GL_TEXTURE_2D, texid1);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glUseProgram(0);
-		drawfsquad();
-		//todo make this cleaner
-		SDL_GL_SwapBuffers();
+	if(count > skip){
+		glDrawScreen();
 		count = 0;
 	}
 	which = !which;

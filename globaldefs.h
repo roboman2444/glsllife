@@ -10,6 +10,7 @@
 // varbles
 int debugmode;
 int active;
+int skip;
 char *shadervertname;
 char *shaderfragname;
 

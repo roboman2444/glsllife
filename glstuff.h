@@ -3,7 +3,8 @@
 
 int glInit(void);
 int glRender(void);
-int startsmall(void);
+void startsmall(void);
+void glDrawScreen(void);
 int loadTexture(const char * filename);
 
 #endif

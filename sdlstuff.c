@@ -69,6 +69,15 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
                 case SDLK_SPACE:
                         active =!active;
                 break;
+                case SDLK_RIGHT:
+                        skip = ((skip+1)*10.0)-1;
+			printf("frameskip: %i\n", skip);
+                break;
+                case SDLK_LEFT:
+                        skip = ((skip+1)/10.0)-1;
+			if(skip <0) skip = 0;
+			printf("frameskip: %i\n", skip);
+                break;
         }
         return;
 }
@@ -78,7 +87,7 @@ int sdlImportImage(const char * filename, int *height, int *width, void ** data)
 	if(!(TextureImage = SDL_LoadBMP(filename))) return FALSE;
 	*height = TextureImage->h;
 	*width = TextureImage->w;
-	int size = *height * *width * 3;
+	int size = TextureImage->w * TextureImage->h * TextureImage->format->BytesPerPixel;
 	*data = malloc(size);
 	memcpy(*data, TextureImage->pixels, size);
 	SDL_FreeSurface(TextureImage);
