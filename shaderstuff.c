@@ -9,6 +9,7 @@
 #include "filestuff.h"
 extern int printShaderLogStatus(int shader);
 extern int printProgramLogStatus(int shader);
+extern int setupUniforms(void);
 int initShader(void){
 	if(debugmode) printf("DEBUG -- Initializing Shaders\n");
 	char * shadervertstring;
@@ -45,7 +46,7 @@ int initShader(void){
 	//todo error check
 
 
-	GLint fragcompiled, vertcompiled, programlinked;
+	GLint fragcompiled, vertcompiled/*, programlinked*/;
 	glGetShaderiv(vertshader, GL_COMPILE_STATUS, &vertcompiled);
 	glGetShaderiv(fragshader, GL_COMPILE_STATUS, &fragcompiled);
 	if (!vertcompiled)printShaderLogStatus(vertshader);
@@ -69,7 +70,16 @@ int initShader(void){
 //	}
 
 	if(debugmode) printf("DEBUG -- Shader compiled and linked \n");
+	setupUniforms();
 	//todo error checking
+	return TRUE;
+}
+int setupUniforms(void){
+	GLint UniformLocation = glGetUniformLocation(programobject, "offsetVec");
+	//todo error check
+	glUniform2f(UniformLocation, 1.0/(float)playwidth, 1.0/(float)playheight);
+	if(debugmode) printf("DEBUG -- Shader Uniforms set to %f,%f\n", 1.0/(float)playwidth, 1.0/(float)playheight);
+
 	return TRUE;
 }
 int printShaderLogStatus(int shader){

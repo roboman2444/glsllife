@@ -16,4 +16,5 @@ int slowness;
 char *shadervertname;
 char *shaderfragname;
 
+int playwidth, playheight;
 #endif

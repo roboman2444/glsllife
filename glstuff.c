@@ -14,16 +14,19 @@ GLuint texid2, texid1;
 GLuint fbid2, fbid1;
 int which = FALSE;
 int count = 0;
+float aspect = 0;
 //functions
 extern void glDrawScreen();
 int initFB(void){
-	skip = 0;//todo move
+	if(playwidth ==0) playwidth = 1;
+	if(playheight ==0) playheight = 1;
+	aspect = (float)screenWidth/(float)screenHeight;
 	glGenTextures(1, &texid1);
 	glBindTexture(GL_TEXTURE_2D, texid1);
 	//may need to change gl_int to byte or something fo speed
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, screenWidth, screenHeight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, playwidth, playheight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glGenFramebuffers(1, &fbid1);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid1);
@@ -37,7 +40,7 @@ int initFB(void){
 	//may need to change gl_int to byte or something fo speed
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, screenWidth, screenHeight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, playwidth, playheight, 0, GL_RED, GL_UNSIGNED_BYTE, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glGenFramebuffers(1, &fbid2);
@@ -66,7 +69,7 @@ int glInit(void){
 
 	//todo move this stuff
 
-	glViewport(0, 0, screenWidth, screenHeight);
+	glViewport(0, 0, playwidth, playheight);
 	glMatrixMode(GL_PROJECTION);// Select The Projection Matrix
 	glLoadIdentity();// Reset The Projection Matrix
 	glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f); //maybe change
@@ -121,7 +124,7 @@ int loadTexture(const char * filename){
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glUseProgram(0);
-	drawsmallquad((float)width/(float)screenWidth, (float)height/(float)screenHeight); //i forgot the casting rules for int division
+	drawsmallquad((float)width/(float)playwidth, (float)height/(float)playheight); //i forgot the casting rules for int division
 	glDeleteTextures( 1, &texture);
 	glDrawScreen();
 	return TRUE;
@@ -154,6 +157,13 @@ int glRender(void){
 	return TRUE;
 }
 void glDrawScreen(void){
+	glViewport(0, 0, screenWidth, screenHeight);
+	glMatrixMode(GL_PROJECTION);// Select The Projection Matrix
+	glLoadIdentity();// Reset The Projection Matrix
+	glOrtho(-aspect, aspect, -1.0f, 1.0f, 0.1f, 100.0f); //maybe change
+//	glMatrixMode(GL_MODELVIEW);                     // Select The Modelview Matrix
+//	glLoadIdentity();                           // Reset The Modelview Matrix
+
 	if(which)glBindTexture(GL_TEXTURE_2D, texid1);
 	else glBindTexture(GL_TEXTURE_2D, texid2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -162,4 +172,13 @@ void glDrawScreen(void){
 	drawsmallquad(zoom, zoom);
 	//todo make this cleaner
 	SDL_GL_SwapBuffers();
+	glViewport(0, 0, playwidth, playheight);
+	glMatrixMode(GL_PROJECTION);// Select The Projection Matrix
+	glLoadIdentity();// Reset The Projection Matrix
+	glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f); //maybe change
+//	glMatrixMode(GL_MODELVIEW);                     // Select The Modelview Matrix
+//	glLoadIdentity();                           // Reset The Modelview Matrix
+
+
+
 }
