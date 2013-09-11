@@ -1,6 +1,6 @@
 varying vec2 texCoord;
 varying vec2 offsetCoord;
-varying vec2 offsetVec;
+uniform vec2 offsetVec;
 //varying vec2 screenRes;
 void main(){
 //	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex; //The order in which you times matrices and vertices is IMPORTANT.
