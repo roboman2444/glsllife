@@ -11,6 +11,7 @@ extern int SDL_GetTicks();
 int main(int argc, char *argv[]){
 	debugmode = TRUE;
 	active = FALSE;
+	slowness = 1;
 	skip = 0;
 	zoom = 1.0f;
 	int framecount, to, t;
@@ -37,7 +38,8 @@ int main(int argc, char *argv[]){
 			glDrawScreen();
 		}
 //		sleep(1);
-//		SDL_Delay(500);
+	if(slowness > 1)
+		SDL_Delay(slowness);
 	}
 	return TRUE;
 }

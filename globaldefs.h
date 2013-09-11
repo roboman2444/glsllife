@@ -12,6 +12,7 @@ int debugmode;
 int active;
 int skip;
 float zoom;
+int slowness;
 char *shadervertname;
 char *shaderfragname;
 
