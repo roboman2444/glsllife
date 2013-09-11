@@ -4,7 +4,7 @@
 //local includes
 #include "globaldefs.h"
 #include "sdlstuff.h"
-
+#include "glstuff.h"
 //local vars
 SDL_Surface *surface;
 const SDL_VideoInfo *videoInfo;
@@ -90,10 +90,14 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
                 case SDLK_UP:
                         zoom*=2;
 			printf("zoom: %f\n", zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
                 break;
                 case SDLK_DOWN:
                         zoom/=2;
 			printf("zoom: %f\n", zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
                 break;
         }
         return;

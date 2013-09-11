@@ -75,10 +75,14 @@ int initShader(void){
 	return TRUE;
 }
 int setupUniforms(void){
-	GLint UniformLocation = glGetUniformLocation(programobject, "offsetVec");
+	glUseProgram(programobject);
+//	GLint UniformLocation = glGetUniformLocation(programobject, "offsetVec");
 	//todo error check
-	glUniform2f(UniformLocation, 1.0/(float)playwidth, 1.0/(float)playheight);
-	if(debugmode) printf("DEBUG -- Shader Uniforms set to %f,%f\n", 1.0/(float)playwidth, 1.0/(float)playheight);
+//	glUniform2f(UniformLocation, 1.0/(float)playwidth, 1.0/(float)playheight);
+//	if(debugmode) printf("DEBUG -- Shader Uniforms set to %f,%f\n", 1.0/(float)playwidth, 1.0/(float)playheight);
+	//todo error check
+	glUniform2f(glGetUniformLocation(programobject, "offsetVec"), 1.0/(float)playwidth, 1.0/(float)playheight);
+	glUseProgram(0);
 
 	return TRUE;
 }

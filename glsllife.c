@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
 				framecount = 0;
 			}
 		} else {
-			glDrawScreen();
+			glDrawScreen(TRUE);
 		}
 //		sleep(1);
 	if(slowness > 1)

@@ -126,7 +126,7 @@ int loadTexture(const char * filename){
 	glUseProgram(0);
 	drawsmallquad((float)width/(float)playwidth, (float)height/(float)playheight); //i forgot the casting rules for int division
 	glDeleteTextures( 1, &texture);
-	glDrawScreen();
+	glDrawScreen(FALSE);
 	return TRUE;
 
 }
@@ -139,6 +139,7 @@ void startsmall(void){
 }
 int glRender(void){
 	glUseProgram(programobject);
+//	setupUniforms();
 	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
 		glBindTexture(GL_TEXTURE_2D, texid1);
@@ -148,7 +149,7 @@ int glRender(void){
 	}
 	drawfsquad();
 	if(count > skip){
-		glDrawScreen();
+		glDrawScreen(FALSE);
 		count = 0;
 	}
 	which = !which;
@@ -156,7 +157,7 @@ int glRender(void){
 	//todo errorcheckin
 	return TRUE;
 }
-void glDrawScreen(void){
+void glDrawScreen(int redraw){
 	glViewport(0, 0, screenWidth, screenHeight);
 	glMatrixMode(GL_PROJECTION);// Select The Projection Matrix
 	glLoadIdentity();// Reset The Projection Matrix
@@ -168,7 +169,7 @@ void glDrawScreen(void){
 	else glBindTexture(GL_TEXTURE_2D, texid2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);
-	if(zoom<1.0) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if(redraw) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawsmallquad(zoom, zoom);
 	//todo make this cleaner
 	SDL_GL_SwapBuffers();
