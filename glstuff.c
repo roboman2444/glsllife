@@ -101,6 +101,14 @@ void drawsmallquad(const float sizex, const float sizey){
 		glTexCoord2f(0.0f, 1.0f);glVertex3f(-sizex, sizey, -0.5f);
 	glEnd();
 }
+void drawposquad(const float sizex, const float sizey, const float xpos, const float ypos){ //todo maybe calculate these when changes occour instead of every frame?
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);glVertex3f(xpos-sizex,ypos-sizey, -0.5f);
+		glTexCoord2f(1.0f, 0.0f);glVertex3f(xpos+sizex,ypos-sizey, -0.5f);
+		glTexCoord2f(1.0f, 1.0f);glVertex3f(xpos+sizex,ypos+sizey, -0.5f);
+		glTexCoord2f(0.0f, 1.0f);glVertex3f(xpos-sizex,ypos+sizey, -0.5f);
+	glEnd();
+}
 int loadTexture(const char * filename){
 //todo make texture struct
 	void * data;
@@ -170,7 +178,7 @@ void glDrawScreen(int redraw){
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glUseProgram(0);
 	if(redraw) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	drawsmallquad(zoom, zoom);
+	drawposquad(zoom, zoom, viewposx, viewposy);
 	//todo make this cleaner
 	SDL_GL_SwapBuffers();
 	glViewport(0, 0, playwidth, playheight);

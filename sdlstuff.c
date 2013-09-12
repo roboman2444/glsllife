@@ -99,6 +99,38 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
 			glDrawScreen(TRUE);
 			glDrawScreen(TRUE);
                 break;
+                case SDLK_r:
+                        zoom= 1;
+			printf("zoom: %f\n", zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
+			viewposx = 0;
+			viewposy = 0;
+                break;
+                case SDLK_w:
+			viewposy += -0.5/sqrt(zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
+
+                break;
+                case SDLK_s:
+			viewposy += 0.5/sqrt(zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
+
+                break;
+                case SDLK_a:
+			viewposx += 0.5/sqrt(zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
+
+                break;
+                case SDLK_d:
+			viewposx += -0.5/sqrt(zoom);
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
+
+                break;
         }
         return;
 }

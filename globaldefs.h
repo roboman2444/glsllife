@@ -15,6 +15,8 @@ float zoom;
 int slowness;
 char *shadervertname;
 char *shaderfragname;
+float viewposx;
+float viewposy;
 
 int playwidth, playheight;
 #endif
