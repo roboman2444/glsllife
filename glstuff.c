@@ -121,13 +121,7 @@ int loadTexture(const char * filename){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-//	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
-//		glBindTexture(GL_TEXTURE_2D, texid1);
-//	} else {
-//		glBindFramebuffer(GL_FRAMEBUFFER,fbid1);
-//		glBindTexture(GL_TEXTURE_2D, texid2);
-//	}
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -143,11 +137,10 @@ void startsmall(void){
 	glBindFramebuffer(GL_FRAMEBUFFER, fbid2);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glColor3f(1.0f, 1.0f, 1.0f); //wont need this much longer
-	drawsmallquad(0.6f, 0.8f);
+	drawsmallquad(0.5f, 0.5f);
 }
 int glRender(void){
 	glUseProgram(programobject);
-//	setupUniforms();
 	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
 		glBindTexture(GL_TEXTURE_2D, texid1);

@@ -131,6 +131,9 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
 			glDrawScreen(TRUE);
 
                 break;
+		default:
+		break;
+
         }
         return;
 }
