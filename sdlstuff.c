@@ -102,10 +102,10 @@ void sdlHandleKeyPress(SDL_keysym *keysym){
                 case SDLK_r:
                         zoom= 1;
 			printf("zoom: %f\n", zoom);
-			glDrawScreen(TRUE);
-			glDrawScreen(TRUE);
 			viewposx = 0;
 			viewposy = 0;
+			glDrawScreen(TRUE);
+			glDrawScreen(TRUE);
                 break;
                 case SDLK_w:
 			viewposy += -0.5/sqrt(zoom);
