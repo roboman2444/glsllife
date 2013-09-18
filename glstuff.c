@@ -82,6 +82,7 @@ int glInit(void){
 	//todo error checkelecking
 	if(!initShader()) return FALSE;
 	if(!initFB())	return FALSE;
+//	glUseProgram(programobject);
 
 	return TRUE;
 }
@@ -121,7 +122,7 @@ int loadTexture(const char * filename){
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
+	glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -129,6 +130,8 @@ int loadTexture(const char * filename){
 	drawsmallquad((float)width/(float)playwidth, (float)height/(float)playheight); //i forgot the casting rules for int division
 	glDeleteTextures( 1, &texture);
 	glDrawScreen(FALSE);
+	glUseProgram(programobject);
+
 	return TRUE;
 
 }
@@ -140,13 +143,17 @@ void startsmall(void){
 	drawsmallquad(0.5f, 0.5f);
 }
 int glRender(void){
-	glUseProgram(programobject);
+//	glUseProgram(programobject);
 	if(which){ // this is a fraction of a fraction of a percent faster... theoretically
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid2);
 		glBindTexture(GL_TEXTURE_2D, texid1);
+//		glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, texid2, 0);
+
 	} else {
 		glBindFramebuffer(GL_FRAMEBUFFER,fbid1);
 		glBindTexture(GL_TEXTURE_2D, texid2);
+//		glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, texid1, 0);
+
 	}
 	drawfsquad();
 	if(count > skip){
@@ -172,6 +179,7 @@ void glDrawScreen(int redraw){
 	glUseProgram(0);
 	if(redraw) glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	drawposquad(zoom, zoom, viewposx, viewposy);
+//	glBlitFramebuffer(0,0,1000,1000,0,0,1000,1000, GL_COLOR_BUFFER_BIT,GL_LINEAR);
 	//todo make this cleaner
 	SDL_GL_SwapBuffers();
 	glViewport(0, 0, playwidth, playheight);
@@ -181,6 +189,7 @@ void glDrawScreen(int redraw){
 //	glMatrixMode(GL_MODELVIEW);                     // Select The Modelview Matrix
 //	glLoadIdentity();                           // Reset The Modelview Matrix
 
+	glUseProgram(programobject);
 
 
 }
