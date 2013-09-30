@@ -17,10 +17,10 @@ int main(int argc, char *argv[]){
 	int framecount, to, t;
 	shadervertname = "./life.vert";
 	shaderfragname = "./life.frag";
-	playwidth = 800;
-	playheight = 600;
+	playwidth = 1024;
+	playheight = 1024;
 
-	if(!sdlInit(800, 600, 24) || !glInit()) return FALSE;
+	if(!sdlInit(1366, 768, 24) || !glInit()) return FALSE;
 //	startsmall();
 	if(argc >1)
 		loadTexture(argv[1]);
