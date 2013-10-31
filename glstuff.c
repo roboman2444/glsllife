@@ -16,10 +16,14 @@ GLuint fsvbo, fsivbo, fsvao;
 int which = FALSE;
 int count = 0;
 float aspect = 0;
-float fsverts[] = {-1.0, -1.0, -0.5, 0.0, 0.0,
-		    1.0, -1.0, -0.5, 1.0, 0.0,
-		    1.0,  1.0, -0.5, 1.0, 1.0,
-		   -1.0,  1.0, -0.5, 0.0, 1.0};
+//float fsverts[] = {-1.0, -1.0, -0.5, 0.0, 0.0,
+//		    1.0, -1.0, -0.5, 1.0, 0.0,
+//		    1.0,  1.0, -0.5, 1.0, 1.0,
+//		   -1.0,  1.0, -0.5, 0.0, 1.0};
+float fsverts[] = {-1.0, -1.0, 0.0, 0.0,
+		    1.0, -1.0, 1.0, 0.0,
+		    1.0,  1.0, 1.0, 1.0,
+		   -1.0,  1.0, 0.0, 1.0};
 GLuint fsindices[] = {0,1,2, 2,3,0};
 //functions
 extern void glDrawScreen();
@@ -67,9 +71,9 @@ int initVBO(void){
 	glBindBuffer(GL_ARRAY_BUFFER, fsvbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(fsverts),fsverts, GL_STATIC_DRAW);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 5*sizeof(GLfloat), NULL);
+	glVertexPointer(2, GL_FLOAT, 4*sizeof(GLfloat), NULL);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glTexCoordPointer(2, GL_FLOAT, 5*sizeof(GLfloat), ((char*)NULL)+3*sizeof(GLfloat) );
+	glTexCoordPointer(2, GL_FLOAT, 4*sizeof(GLfloat), ((char*)NULL)+2*sizeof(GLfloat) );
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, fsivbo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(fsindices),fsindices, GL_STATIC_DRAW);
