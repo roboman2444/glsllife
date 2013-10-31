@@ -12,9 +12,15 @@
 //local vars
 GLuint texid2, texid1;
 GLuint fbid2, fbid1;
+GLuint fsvbo, fsivbo, fsvao;
 int which = FALSE;
 int count = 0;
 float aspect = 0;
+float fsverts[] = {-1.0, -1.0, -0.5, 0.0, 0.0,
+		    1.0, -1.0, -0.5, 1.0, 0.0,
+		    1.0,  1.0, -0.5, 1.0, 1.0,
+		   -1.0,  1.0, -0.5, 0.0, 1.0};
+GLuint fsindices[] = {0,1,2, 2,3,0};
 //functions
 extern void glDrawScreen();
 int initFB(void){
@@ -53,6 +59,22 @@ int initFB(void){
 	//todo error detection
 	return TRUE;
 }
+int initVBO(void){
+	glGenVertexArrays(1, &fsvao);
+	glGenBuffers(1, &fsvbo);
+	glGenBuffers(1, &fsivbo);
+	glBindVertexArray(fsvao);
+	glBindBuffer(GL_ARRAY_BUFFER, fsvbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(fsverts),fsverts, GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 5*sizeof(GLfloat), NULL);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glTexCoordPointer(2, GL_FLOAT, 5*sizeof(GLfloat), ((char*)NULL)+3*sizeof(GLfloat) );
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, fsivbo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(fsindices),fsindices, GL_STATIC_DRAW);
+	return TRUE;
+}
 int glInit(void){
 	if(debugmode) printf("DEBUG -- Initialising OpenGL \n");
 
@@ -83,16 +105,27 @@ int glInit(void){
 	if(!initShader()) return FALSE;
 	if(!initFB())	return FALSE;
 //	glUseProgram(programobject);
+	initVBO();
 
 	return TRUE;
 }
 void drawfsquad(void){
-	glBegin(GL_QUADS);
+/*	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 0.0f);glVertex3f(-1.0f,-1.0f, -0.5f);
 		glTexCoord2f(1.0f, 0.0f);glVertex3f( 1.0f,-1.0f, -0.5f);
 		glTexCoord2f(1.0f, 1.0f);glVertex3f( 1.0f, 1.0f, -0.5f);
 		glTexCoord2f(0.0f, 1.0f);glVertex3f(-1.0f, 1.0f, -0.5f);
 	glEnd();
+*/
+/*
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);glVertex2f(-1.0f,-1.0f);
+		glTexCoord2f(1.0f, 0.0f);glVertex2f( 1.0f,-1.0f);
+		glTexCoord2f(1.0f, 1.0f);glVertex2f( 1.0f, 1.0f);
+		glTexCoord2f(0.0f, 1.0f);glVertex2f(-1.0f, 1.0f);
+	glEnd();
+*/
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 void drawsmallquad(const float sizex, const float sizey){
 	glBegin(GL_QUADS);

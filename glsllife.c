@@ -17,8 +17,10 @@ int main(int argc, char *argv[]){
 	int framecount, to, t;
 	shadervertname = "./life.vert";
 	shaderfragname = "./life.frag";
-	playwidth = 1024;
-	playheight = 1024;
+//	playwidth = 8192;
+//	playheight = 8192;
+	playwidth = 800;
+	playheight = 600;
 
 	if(!sdlInit(1366, 768, 24) || !glInit()) return FALSE;
 //	startsmall();
