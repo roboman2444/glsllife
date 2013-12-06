@@ -3,7 +3,7 @@ varying vec2 texCoord;
 varying vec2 offsetCoord;
 
 void main(){
-	int neighbors;
+	float neighbors;
 	neighbors  = textureOffset(texture, texCoord, ivec2(1, -1)).r;
 //	neighbors += textureOffset(texture, texCoord, ivec2(1,  0)).r; // grabbed by textureGather
 //	neighbors += textureOffset(texture, texCoord, ivec2(1,  1)).r; // grabbed by textureGather

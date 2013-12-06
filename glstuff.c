@@ -129,6 +129,7 @@ void drawfsquad(void){
 		glTexCoord2f(0.0f, 1.0f);glVertex2f(-1.0f, 1.0f);
 	glEnd();
 */
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 void drawsmallquad(const float sizex, const float sizey){
