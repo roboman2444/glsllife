@@ -34,7 +34,7 @@ void main(){
 
 
 /*//needs ogl 4, todo checks and todo do
-	tempvec = textureGatherOffset(texture, texCoord, ivec2(-1.-1));
+	tempvec = textureGatherOffset(texture, texCoord, ivec2(-1,-1));
 	neighbors += tempvec.x;
 //	neighbors += tempvec.y;
 	neighbors += tempvec.z;
@@ -44,9 +44,9 @@ void main(){
 
 //	gl_FragColor.r = texture2D(texture, texCoord); // carried life grabbed by textureGather
 
-	gl_FragColor.r += step(3, neighbors); //added life if under 3
+	gl_FragColor.r += step(3.0, neighbors); //added life if under 3
 
-	gl_FragColor.r *= step(2, neighbors); //death if under 2
-	gl_FragColor.r *= step(neighbors, 3); // death if over 3
+	gl_FragColor.r *= step(2.0, neighbors); //death if under 2
+	gl_FragColor.r *= step(neighbors, 3.0); // death if over 3
 
 }
