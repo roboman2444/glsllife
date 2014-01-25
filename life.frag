@@ -1,3 +1,5 @@
+//#version 130
+//#extension GL_ARB_texture_gather : enable
 uniform sampler2D texture;
 varying vec2 texCoord;
 varying vec2 offsetCoord;
@@ -15,15 +17,6 @@ void main(){
 
 
 	vec4 tempvec;
-	tempvec = textureGather(texture, texCoord);
-	neighbors += tempvec.x;
-	neighbors += tempvec.y;
-	neighbors += tempvec.z;
-//	neighbors += tempvec.w;
-	gl_FragColor.r = tempvec.w; // carried life
-
-
-//WIP
 	tempvec = textureGather(texture, offsetCoord);
 	neighbors += tempvec.x;
 //	neighbors += tempvec.y;
@@ -31,22 +24,29 @@ void main(){
 	neighbors += tempvec.w;
 
 
-
-
-/*//needs ogl 4, todo checks and todo do
-	tempvec = textureGatherOffset(texture, texCoord, ivec2(-1,-1));
+	tempvec = textureGather(texture, texCoord);
 	neighbors += tempvec.x;
-//	neighbors += tempvec.y;
+	neighbors += tempvec.y;
 	neighbors += tempvec.z;
-	neighbors += tempvec.w;
-*/
+//	neighbors += tempvec.w;
+//	gl_FragColor.r = tempvec.w; // carried life
 
 
-//	gl_FragColor.r = texture2D(texture, texCoord); // carried life grabbed by textureGather
+//WIP
 
-	gl_FragColor.r += step(3.0, neighbors); //added life if under 3
 
-	gl_FragColor.r *= step(2.0, neighbors); //death if under 2
-	gl_FragColor.r *= step(neighbors, 3.0); // death if over 3
+
+
+
+
+//	gl_FragColor.r = tempvec.w; // carried life
+//	gl_FragColor.r += step(3.0, neighbors); //added life if under 3
+//	gl_FragColor.r *= step(2.0, neighbors); //death if under 2
+//	gl_FragColor.r *= step(neighbors, 3.0); // death if over 3
+
+	if(neighbors == 2.0) gl_FragColor.r = tempvec.w; //carry if two
+	else if(neighbors == 3.0) gl_FragColor.r = 1.0; //add life if one
+
+
 
 }
